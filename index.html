@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SQL Portfolio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+
+<body>
+  <h1>SQL Demo</h1>
+
+  <textarea id="query" rows="6" cols="60">
+SELECT 1 as test;
+  </textarea>
+
+  <br><br>
+  <button onclick="runQuery()">Run Query</button>
+
+  <pre id="output"></pre>
+
+  <script>
+    let db;
+
+    async function initDB() {
+      const SQL = await initSqlJs({
+        locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+      });
+
+      db = new SQL.Database();
+
+      // Example table
+      db.run(`
+        CREATE TABLE sets (year INT, num_parts INT);
+        INSERT INTO sets VALUES (2020, 500), (2021, 700), (2022, 650);
+      `);
+    }
+
+    async function runQuery() {
+      const query = document.getElementById("query").value;
+
+      try {
+        const result = db.exec(query);
+        document.getElementById("output").textContent = JSON.stringify(result, null, 2);
+      } catch (err) {
+        document.getElementById("output").textContent = err.message;
+      }
+    }
+
+    initDB();
+  </script>
+</body>
+</html>
