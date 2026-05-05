@@ -70,7 +70,7 @@ ORDER BY year;
         locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
       });
 
-      const response = await fetch("data/lego.sqlite");
+      const response = await fetch("data/lego_portfolio.sqlite");
       const buffer = await response.arrayBuffer();
 
       db = new SQL.Database(new Uint8Array(buffer));
